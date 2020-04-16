@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @date 2020/4/15 19:37
  */
 @RestController
-@Api("应用配置中心")
+@Api("商品")
 @RequestMapping("${spring.web.base-path}/product")
 public class ProductController {
     @Resource
