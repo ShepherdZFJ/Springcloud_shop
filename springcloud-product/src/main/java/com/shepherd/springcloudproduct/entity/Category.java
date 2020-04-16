@@ -5,26 +5,19 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * @author fjZheng
  * @version 1.0
- * @date 2020/4/15 19:40
+ * @date 2020/4/16 15:08
  */
 @Data
-public class Product implements Serializable {
+public class Category {
     @TableId(type = IdType.AUTO)
     private Long id;
-    private Long categoryId;
     private String name;
-    private BigDecimal price;
-    private Integer stock;
-    private String description;
-    private String icon;
-    private Integer status;
     private Integer isDelete;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
