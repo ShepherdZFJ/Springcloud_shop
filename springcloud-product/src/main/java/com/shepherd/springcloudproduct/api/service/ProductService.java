@@ -1,5 +1,7 @@
 package com.shepherd.springcloudproduct.api.service;
 
+import com.shepherd.springcloudproduct.api.vo.ProductVO;
+import com.shepherd.springcloudproduct.dto.ProductDTO;
 import com.shepherd.springcloudproduct.entity.Product;
 
 import java.util.List;
@@ -12,4 +14,7 @@ import java.util.List;
 public interface ProductService {
 
     List<Product> getProductList();
+    ProductVO getProduct();
+
+
 }
