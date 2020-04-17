@@ -1,5 +1,6 @@
 package com.shepherd.springcloudorder.api.service;
 
+import com.shepherd.springcloudorder.dto.OrderDTO;
 import com.shepherd.springcloudorder.entity.OrderMaster;
 
 import java.util.List;
@@ -12,4 +13,6 @@ import java.util.List;
 public interface OrderService {
 
     List<OrderMaster> getOrderList();
+
+    void addOrder(OrderDTO orderDTO);
 }
