@@ -1,4 +1,4 @@
-package com.shepherd.springcloudorder.common;
+package com.shepherd.springcloudorder.util;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;

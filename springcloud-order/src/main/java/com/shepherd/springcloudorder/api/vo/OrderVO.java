@@ -1,10 +1,13 @@
 package com.shepherd.springcloudorder.api.vo;
 
+import com.shepherd.springcloudorder.dto.CartDTO;
+import com.sun.corba.se.pept.transport.ListenerThread;
 import lombok.Data;
 import lombok.NonNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author fjZheng
@@ -43,6 +46,6 @@ public class OrderVO {
      * 购物车
      */
     @NotNull(message = "购物车不能为空")
-    private String items;
+    private List<CartDTO> items;
 
 }

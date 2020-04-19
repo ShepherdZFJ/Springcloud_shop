@@ -24,4 +24,8 @@ public class ProductDTO {
 
     @JsonProperty("foods")
     List<Product> productList;
+
+    List<Long> productIds;
+
+    List<CartDTO> cartList;
 }

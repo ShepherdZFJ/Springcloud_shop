@@ -1,4 +1,4 @@
-package com.shepherd.springcloudorder.common;
+package com.shepherd.springcloudorder.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,9 +9,9 @@ import org.springframework.beans.BeanUtils;
  * @version 1.0
  * @date 2020/4/17 18:40
  */
-public class BeanUtil {
+public class OrderUtils {
 
-    private static Logger log = LoggerFactory.getLogger(BeanUtil.class);
+    private static Logger log = LoggerFactory.getLogger(OrderUtils.class);
 
     public static <A, B> B copy(A a, Class<B> clazz) {
         if (a == null || clazz == null) {

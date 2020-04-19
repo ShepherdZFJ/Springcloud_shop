@@ -1,16 +1,20 @@
 package com.shepherd.springcloudproduct.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.shepherd.springcloudproduct.exception.BusinessException;
 import com.shepherd.springcloudproduct.api.service.ProductService;
 import com.shepherd.springcloudproduct.api.vo.ProductVO;
 import com.shepherd.springcloudproduct.common.Constant;
 import com.shepherd.springcloudproduct.common.MsgConstant;
 import com.shepherd.springcloudproduct.dao.CategoryDAO;
 import com.shepherd.springcloudproduct.dao.ProductDAO;
+import com.shepherd.springcloudproduct.dto.CartDTO;
 import com.shepherd.springcloudproduct.dto.ProductDTO;
 import com.shepherd.springcloudproduct.entity.Category;
 import com.shepherd.springcloudproduct.entity.Product;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -30,9 +34,8 @@ public class ProductServiceImpl implements ProductService {
     private CategoryDAO categoryDAO;
 
     @Override
-    public List<Product> getProductList() {
-        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
-        List<Product> products = productDAO.selectList(queryWrapper);
+    public List<Product> getProductList(List<Long> productIds) {
+        List<Product> products = productDAO.selectBatchIds(productIds);
         return products;
     }
 
@@ -69,5 +72,25 @@ public class ProductServiceImpl implements ProductService {
         productVO.setCode(Constant.SUCCESS);
         productVO.setMsg(MsgConstant.RESULT_SUCCESS);
         return productVO;
+    }
+
+    @Override
+    @Transactional()
+    public void decreaseStock(List<CartDTO> cartList) {
+        for(CartDTO cartDTO: cartList){
+            Product product = productDAO.selectById(cartDTO.getProductId());
+            if(product == null){
+                throw new BusinessException(MsgConstant.PRODUCT_NOT_EXIST);
+            }
+            Integer stock = product.getStock()- cartDTO.getProductQuantity();
+            if(stock < 0 ){
+                throw new BusinessException(MsgConstant.PRODUCT_STOCK_LACK);
+            }
+            UpdateWrapper<Product> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("id", cartDTO.getProductId());
+            updateWrapper.set("stock", stock);
+            int i = productDAO.update(new Product(), updateWrapper);
+        }
+
     }
 }

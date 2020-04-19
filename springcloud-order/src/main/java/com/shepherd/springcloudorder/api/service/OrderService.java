@@ -14,5 +14,5 @@ public interface OrderService {
 
     List<OrderMaster> getOrderList();
 
-    void addOrder(OrderDTO orderDTO);
+    OrderDTO addOrder(OrderDTO orderDTO);
 }

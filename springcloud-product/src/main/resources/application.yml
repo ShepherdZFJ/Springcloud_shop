@@ -1,3 +1,4 @@
+
 spring:
   application:
     name: springCloud-product
@@ -38,3 +39,5 @@ mybatis-plus:
     #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
     #自定义填充策略接口实现
     #meta-object-handler: com.baomidou.springboot.xxx
+server:
+  port: 8801

@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -27,7 +28,7 @@ public class ProductServiceImplTest {
 
     @Test
     public void getProductList() {
-        List<Product> productList = productService.getProductList();
+        List<Product> productList = productService.getProductList(Arrays.asList(2L,3L));
         System.out.println(productList);
 
     }

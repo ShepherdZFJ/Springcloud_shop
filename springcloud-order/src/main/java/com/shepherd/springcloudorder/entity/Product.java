@@ -10,20 +10,21 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * @author fjZheng
+ * @author fjzheng
  * @version 1.0
- * @date 2020/4/17 15:43
+ * @date 2020/4/18 20:57
  */
 @Data
-public class OrderDetail implements Serializable {
+public class Product implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
-    private Long orderId;
-    private Long productId;
-    private String productName;
-    private BigDecimal productPrice;
-    private Integer productQuantity;
-    private String productIcon;
+    private Long categoryId;
+    private String name;
+    private BigDecimal price;
+    private Integer stock;
+    private String description;
+    private String icon;
+    private Integer status;
     private Integer isDelete;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;

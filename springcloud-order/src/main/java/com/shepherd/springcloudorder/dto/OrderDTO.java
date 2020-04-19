@@ -15,7 +15,7 @@ import java.util.List;
 public class OrderDTO {
 
     /** 订单id. */
-    private String id;
+    private Long id;
 
     /** 买家名字. */
     private String buyerName;
@@ -38,5 +38,11 @@ public class OrderDTO {
     /** 支付状态, 默认为0未支付. */
     private Integer payStatus;
 
-    private List<OrderDetail> orderDetailList;
+    private String orderNo;
+
+    private Integer isDelete;
+
+    private List<CartDTO> cartDTOList;
+
+
 }
