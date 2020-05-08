@@ -1,5 +1,7 @@
 package com.shepherd.springcloudorder.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.shepherd.springcloudorder.api.service.CommonService;
 import com.shepherd.springcloudorder.api.service.OrderService;
@@ -13,6 +15,10 @@ import com.shepherd.springcloudorder.dto.OrderDTO;
 import com.shepherd.springcloudorder.entity.OrderDetail;
 import com.shepherd.springcloudorder.entity.OrderMaster;
 import com.shepherd.springcloudorder.entity.Product;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.annotation.Queue;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +34,7 @@ import java.util.stream.Collectors;
  * @date 2020/4/17 16:01
  */
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService {
     @Resource
     private OrderDAO orderDAO;
@@ -35,6 +42,10 @@ public class OrderServiceImpl implements OrderService {
     private OrderDetailDAO orderDetailDAO;
     @Resource
     private CommonService commonService;
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
+    private static final String PRODUCT_STOCK = "product_stock_%s";
 
     @Override
     public List<OrderMaster> getOrderList() {
@@ -46,7 +57,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderDTO addOrder(OrderDTO orderDTO) {
-
         //1.根据购物车获取商品详情
         List<Long> productIdList = orderDTO.getCartDTOList().stream().map(CartDTO::getProductId).collect(Collectors.toList());
         List<Product> products = commonService.getproductList(productIdList);
@@ -89,6 +99,19 @@ public class OrderServiceImpl implements OrderService {
         commonService.decreaseStock(orderDTO.getCartDTOList());
 
         return OrderUtils.copy(orderMaster,orderDTO);
-
     }
+
+    //该方法不能有返回值，否则后台会抛出异常，一直打印
+    @RabbitListener(queuesToDeclare = @Queue("product"))
+    public void process(String msg){
+        //Product product = JSON.parseObject(msg, Product.class);
+        List<Product> productList = JSON.parseArray(msg, Product.class);
+        log.info("从队列【{}】接收到消息: {}", "product",productList);
+        for(Product product : productList){
+            stringRedisTemplate.opsForValue().set(String.format(PRODUCT_STOCK, product.getId()), String.valueOf(product.getStock()));
+        }
+    }
+
+
+
 }
