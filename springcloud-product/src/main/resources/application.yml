@@ -9,6 +9,11 @@ spring:
     username: root
     password: zfj126289
     url: jdbc:mysql://127.0.0.1:3306/springCloud_sell?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 eureka:
   client:
     service-url:
@@ -41,3 +46,4 @@ mybatis-plus:
     #meta-object-handler: com.baomidou.springboot.xxx
 server:
   port: 8801
+

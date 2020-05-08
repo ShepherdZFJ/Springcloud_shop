@@ -1,5 +1,6 @@
 package com.shepherd.springcloudproduct.service;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.shepherd.springcloudproduct.exception.BusinessException;
@@ -13,6 +14,7 @@ import com.shepherd.springcloudproduct.dto.CartDTO;
 import com.shepherd.springcloudproduct.dto.ProductDTO;
 import com.shepherd.springcloudproduct.entity.Category;
 import com.shepherd.springcloudproduct.entity.Product;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +34,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductDAO productDAO;
     @Resource
     private CategoryDAO categoryDAO;
+    @Resource
+    private AmqpTemplate amqpTemplate;
 
     @Override
     public List<Product> getProductList(List<Long> productIds) {
@@ -77,6 +81,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional()
     public void decreaseStock(List<CartDTO> cartList) {
+        List<Product> list = new ArrayList<>();
         for(CartDTO cartDTO: cartList){
             Product product = productDAO.selectById(cartDTO.getProductId());
             if(product == null){
@@ -90,7 +95,10 @@ public class ProductServiceImpl implements ProductService {
             updateWrapper.eq("id", cartDTO.getProductId());
             updateWrapper.set("stock", stock);
             int i = productDAO.update(new Product(), updateWrapper);
+            product.setStock(stock);
+            list.add(product);
         }
+        amqpTemplate.convertAndSend("product", JSON.toJSONString(list));
 
     }
 }
