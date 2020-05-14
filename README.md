@@ -1,2 +1,2 @@
 # SpringCloud_shop
-这是一个基于微服务springCloud，SpringBoot，mybatis_plus实现的点餐项目
+这是一个基于微服务springCloud，SpringBoot，mybatis_plus实现的点餐项目,在该项目中我们使用到
