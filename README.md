@@ -1,2 +1,2 @@
-#SpringCloud_shop
+# SpringCloud_shop
 这是一个基于springcloud，springboot，mybatis_plus，redis，rabbitMQ实现的点餐服务项目，在这个项目中，我将详细展示springcloud微服务相关知识运用和总结，同时探讨分布式事务一致性解决方案
